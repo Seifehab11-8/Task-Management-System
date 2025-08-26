@@ -1,6 +1,7 @@
 package com.orange.springtask.task_management_system.configuration;
 
-import com.orange.springtask.task_management_system.service.MyUserDetailsService;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -18,17 +19,22 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
+    private final CustomCorsConfiguration customCorsConfiguration;
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(UserDetailsService userDetailsService
+        , CustomCorsConfiguration customCorsConfiguration) {
         this.userDetailsService = userDetailsService;
+        this.customCorsConfiguration = customCorsConfiguration;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
+        .cors(cors-> cors.configurationSource(customCorsConfiguration))
                 .authorizeHttpRequests(request ->
                         request.requestMatchers(
                                 "/register",
+                                "/login",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll().anyRequest().authenticated())
@@ -49,4 +55,6 @@ public class SecurityConfig {
     public BCryptPasswordEncoder getbCryptPasswordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
+
+
 }

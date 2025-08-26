@@ -1,0 +1,274 @@
+/* Dashboard container */
+.dashboard-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  font-family: Arial, sans-serif;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Dashboard title */
+.dashboard-title {
+  text-align: center;
+  color: #fff;
+  font-size: 2.5rem;
+  /* margin-bottom: 2rem; */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Grid layout for tasks */
+.tasks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Task card */
+.task-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  height: 200px; /* Fixed height for consistency */
+  min-height: 200px;
+}
+
+.task-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Task header */
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.task-title {
+  color: #333;
+  font-size: 1.2rem;
+  margin: 0;
+  flex: 1;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+/* Status badge */
+.task-badge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+/* Badge colors matching your app theme */
+.completed,
+.COMPLETED {
+  background: #d4edda;
+  color: #155724;
+}
+
+.in_progress,
+.IN_PROGRESS {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.pending,
+.PENDING {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Task description */
+.task-desc {
+  color: #666;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+  flex-grow: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Show only 2 lines */
+  line-clamp: 2; /* Standard property for compatibility */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  max-height: 3em; /* Approximately 2 lines */
+}
+
+/* Task footer */
+.task-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.task-due {
+  color: #555;
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+/* View button matching your app's button style */
+.task-btn {
+  padding: 0.6rem 1.2rem;
+  background: #667eea;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 0.9rem;
+}
+
+.task-btn:hover {
+  background: #5646d4;
+}
+
+.create-btn {
+  padding: 0.6rem 1.2rem;
+  color: #667eea;
+  background-color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 1.5rem;
+}
+
+.create-btn:hover {
+  color: #5646d4;
+  background-color: #d8dcd9;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto 2rem auto;
+  margin-bottom: 3rem;
+  gap: 1rem;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: 2px solid #e74c3c;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 0.9rem;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+  border-color: #c0392b;
+  transform: translateY(-2px);
+}
+
+.btn-container{
+  display: flex;
+  align-items: center;
+  gap: 1.2rem; /* Proper gap between elements */
+  padding: 0; /* Remove padding from container */
+  background: none; /* Remove background */
+  border: none; /* Remove border */
+}
+
+/* Dropdown select styling to match create button */
+#status {
+  padding: 0.6rem 1.2rem;
+  color: #667eea;
+  background-color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+  outline: none;
+  appearance: none; /* Remove default arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23667eea' d='M6 8L0 2h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 12px;
+  padding-right: 2.5rem;
+  min-width: 150px;
+  height: 44px; /* Match create button height */
+  box-sizing: border-box;
+}
+
+#status:hover {
+  color: #5646d4;
+  background-color: #d8dcd9;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%235646d4' d='M6 8L0 2h12z'/%3E%3C/svg%3E");
+}
+
+#status:focus {
+  border: 2px solid #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Search bar styling to match dropdown and create button */
+.search-bar {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 300px;
+  margin: 0 1rem;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 0.6rem 1.2rem;
+  /* color: #667eea; */
+  background-color: #fff;
+  border: none;
+  border-radius: 8px;
+  /* font-weight: bold; */
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  height: 44px; /* Match dropdown and button height */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 16px;
+  padding-right: 2.8rem;
+}
+
+.search-bar input:hover {
+  /* color: #5646d4; */
+  background-color: #d8dcd9;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235646d4' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+}
+
+.search-bar input:focus {
+  border: 2px solid #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+}
+
+.search-bar input::placeholder {
+  color: #999;
+  font-weight: normal;
+  opacity: 0.8;
+}

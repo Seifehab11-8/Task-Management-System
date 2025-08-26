@@ -1,6 +1,5 @@
 package com.orange.springtask.task_management_system.service.dto.request;
 import com.orange.springtask.task_management_system.service.dto.UserDto;
-import lombok.Data;
 
 public class UserRequest extends UserDto {
 

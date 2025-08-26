@@ -3,7 +3,6 @@ package com.orange.springtask.task_management_system.service;
 import com.orange.springtask.task_management_system.entities.User;
 import com.orange.springtask.task_management_system.repository.UserRepository;
 import com.orange.springtask.task_management_system.service.dto.principal.UserPrincipal;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

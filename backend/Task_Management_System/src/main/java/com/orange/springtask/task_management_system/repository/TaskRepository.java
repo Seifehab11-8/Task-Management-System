@@ -1,14 +1,15 @@
 package com.orange.springtask.task_management_system.repository;
 
 import com.orange.springtask.task_management_system.entities.Task;
-import com.orange.springtask.task_management_system.entities.User;
+import com.orange.springtask.task_management_system.entities.TaskStatus;
+
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TaskRepository extends CrudRepository<Task, Long> {
-    Optional<Task> findTaskByTitleAndUser_Id(String title, Long userId);
-    Optional<List<Task>> findTasksByStatusAndUser_Id(String status, Long userId);
-    Optional<List<Task>> findTasksByUser_Id(Long userId);
+    List<Task> findTaskByTitleAndUser_Id(String title, Long userId);
+    List<Task> findTasksByStatusAndUser_Id(TaskStatus status, Long userId);
+    List<Task> findTasksByUser_Id(Long userId);
+    List<Task> findTasksByStatusAndTitleAndUser_Id(TaskStatus status, String title, Long userId);
 }

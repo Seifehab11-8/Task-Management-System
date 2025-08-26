@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/tasks")
 @Tag(name = "Task Management", description = "Endpoints for managing tasks")
 public class TaskController {
     private final TaskService taskService;
@@ -25,25 +26,19 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-
-    @GetMapping("/")
-    @Operation(summary = "Greeting", description = "Returns a welcome message.")
-    public ResponseEntity<String> greeting() {
-        return new ResponseEntity<>("Welcome to Task Management System", HttpStatus.OK);
-    }
-
-    @GetMapping("/tasks")
+    @GetMapping
     @Operation(summary = "Get Tasks", description = "Retrieve all tasks, optionally filtered by status.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Tasks retrieved successfully"),
         @ApiResponse(responseCode = "404", description = "Tasks not found")
     })
-    public ResponseEntity<List<TaskResponse>> getTasksByUser_IdOrStatus(
+    public ResponseEntity<List<TaskResponse>> getTasks(
             @Parameter(description = "Status to filter tasks", required = false)
-            @RequestParam(name = "status", required = false) String status) {
+            @RequestParam(name = "status", required = false) String status,
+            @RequestParam(name = "title", required = false) String title) {
         try{
             return new ResponseEntity<>(
-                    taskService.getAllTasks(status),
+                    taskService.getAllTasks(status, title),
                     HttpStatus.OK
             );
         }
@@ -53,18 +48,16 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/task")
-    @Operation(summary = "Get Task by Title", description = "Retrieve a task by its title.")
+    @GetMapping("/{task_id}")
+    @Operation(summary = "Get Tasks", description = "Retrieve all tasks, optionally filtered by status.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Task retrieved successfully"),
-        @ApiResponse(responseCode = "404", description = "Task not found")
+        @ApiResponse(responseCode = "200", description = "Tasks retrieved successfully"),
+        @ApiResponse(responseCode = "404", description = "Tasks not found")
     })
-    public ResponseEntity<TaskResponse> getTaskByUser_IdAndTitle(
-            @Parameter(description = "Title of the task", required = true)
-            @RequestParam(name = "title") String title) {
+    public ResponseEntity<TaskResponse> getTasks(@PathVariable Long task_id) {
         try{
             return new ResponseEntity<>(
-                    taskService.getTaskByTitle(title),
+                    taskService.getTaskById(task_id),
                     HttpStatus.OK
             );
         }
@@ -74,7 +67,7 @@ public class TaskController {
         }
     }
 
-    @PostMapping("/task")
+    @PostMapping
     @Operation(summary = "Add Task", description = "Create a new task.")
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Task created successfully"),
@@ -91,15 +84,15 @@ public class TaskController {
         }
     }
 
-    @PutMapping("/task")
+    @PutMapping("/{task_id}")
     @Operation(summary = "Update Task", description = "Update an existing task.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Task updated successfully"),
         @ApiResponse(responseCode = "404", description = "Task not found")
     })
-    public ResponseEntity<TaskResponse> updateTask(@RequestBody TaskRequestUpdate taskRequestUpdate) {
+    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long task_id, @RequestBody TaskRequestUpdate taskRequestUpdate) {
         try{
-            return new ResponseEntity<>(taskService.updateTask(taskRequestUpdate)
+            return new ResponseEntity<>(taskService.updateTask(task_id, taskRequestUpdate)
                     , HttpStatus.OK);
         }
         catch(ObjectNotFoundException e) {
@@ -108,7 +101,7 @@ public class TaskController {
         }
     }
 
-    @DeleteMapping("/task/{task_id}")
+    @DeleteMapping("/{task_id}")
     @Operation(summary = "Delete Task", description = "Delete a task by its ID.")
     @ApiResponses({
         @ApiResponse(responseCode = "204", description = "Task deleted successfully"),

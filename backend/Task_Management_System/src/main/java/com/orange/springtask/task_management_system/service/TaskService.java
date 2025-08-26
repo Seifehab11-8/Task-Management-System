@@ -1,6 +1,7 @@
 package com.orange.springtask.task_management_system.service;
 
 import com.orange.springtask.task_management_system.entities.Task;
+import com.orange.springtask.task_management_system.entities.TaskStatus;
 import com.orange.springtask.task_management_system.entities.User;
 import com.orange.springtask.task_management_system.repository.TaskRepository;
 import com.orange.springtask.task_management_system.repository.UserRepository;
@@ -12,18 +13,14 @@ import com.orange.springtask.task_management_system.service.dto.request.TaskRequ
 import com.orange.springtask.task_management_system.service.dto.request.TaskRequestUpdate;
 import com.orange.springtask.task_management_system.service.dto.response.TaskResponse;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Data
 @AllArgsConstructor
 @Service
 public class TaskService {
@@ -33,32 +30,29 @@ public class TaskService {
     private TaskResponseMapper taskResponseMapper;
     private TaskRequestUpdateMapper taskRequestUpdateMapper;
 
-    public TaskResponse getTaskByTitle(String title) throws ObjectNotFoundException{
-        User user = getCurrentUser();
-        if(user == null) throw new ObjectNotFoundException(new Object(), "not found");
-        Optional<Task> task = taskRepository.findTaskByTitleAndUser_Id(title, user.getId());
-        return taskResponseMapper.apply(task.orElseThrow(()->new ObjectNotFoundException(task ,"task of title: "
-                + title + "and user_id: "
-                + user.getId() + "not found")));
-    }
 
-    public List<TaskResponse> getAllTasks(String status) throws ObjectNotFoundException{
-        Optional<List<Task>> taskList;
+    public List<TaskResponse> getAllTasks(String status, String title) throws ObjectNotFoundException{
+        List<Task> taskList;
         User user = getCurrentUser();
         if(user == null) throw new ObjectNotFoundException(new Object(), "not found");
-        if(status != null)
-            taskList = taskRepository.findTasksByStatusAndUser_Id(status, user.getId());
+        if(status != null && title == null)
+            taskList = taskRepository.findTasksByStatusAndUser_Id(TaskStatus.valueOf(status), user.getId());
+        else if(title != null && status == null)
+            taskList = taskRepository.findTaskByTitleAndUser_Id(title, user.getId());
+        else if(title != null && status != null)
+            taskList = taskRepository.findTasksByStatusAndTitleAndUser_Id(TaskStatus.valueOf(status), title, user.getId());
         else
             taskList = taskRepository.findTasksByUser_Id(user.getId());
-
-        if(taskList.isEmpty()) {
-            throw new ObjectNotFoundException(taskList ,"tasks with status: "
-                    + status + "and user_id: "
-                    + user.getId() + "not found");
-        }
-        return taskList.get().stream()
+            
+        return taskList.stream()
                 .map(task ->taskResponseMapper.apply(task))
                 .collect(Collectors.toList());
+    }
+
+    public TaskResponse getTaskById(Long task_id) {
+        User user = getCurrentUser();
+        if(user == null) throw new ObjectNotFoundException(new Object(), "not found");
+        return taskResponseMapper.apply(taskRepository.findById(task_id).orElse(null));
     }
 
     public TaskResponse createTask(TaskRequest taskRequest) {
@@ -70,13 +64,13 @@ public class TaskService {
         return taskResponseMapper.apply(task);
     }
 
-    public TaskResponse updateTask(TaskRequestUpdate taskRequestUpdate) {
+    public TaskResponse updateTask(Long task_id,TaskRequestUpdate taskRequestUpdate) {
         User user;
         user = getCurrentUser();
         if(user == null) throw new ObjectNotFoundException(new Object(), "not found");
-        Task taskBeforeFK = taskRequestUpdateMapper.apply(taskRequestUpdate);
-        taskBeforeFK.setUser(user);
-        Task task = taskRepository.save(taskBeforeFK);
+        Task task = taskRequestUpdateMapper.apply(taskRequestUpdate);
+        task.setUser(user);
+        task = taskRepository.save(task);
         return taskResponseMapper.apply(task);
     }
 

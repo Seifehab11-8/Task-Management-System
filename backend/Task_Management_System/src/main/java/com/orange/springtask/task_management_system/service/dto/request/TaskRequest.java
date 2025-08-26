@@ -15,6 +15,6 @@ public class TaskRequest {
     private String title;
     private String description;
     private String status;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dueDate;
 }
