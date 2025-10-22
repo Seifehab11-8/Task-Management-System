@@ -217,16 +217,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Seif Ehab**
 - GitHub: [@Seifehab11-8](https://github.com/Seifehab11-8)
 
-## 🙏 Acknowledgments
-
-- Angular team for the amazing framework
-- Spring Boot community for excellent documentation
-- All contributors and testers
-
-## 📞 Support
-
-For support, email your-email@example.com or open an issue in the repository.
-
----
-
-**Built with ❤️ using Angular and Spring Boot**
+**Built using Angular and Spring Boot**
